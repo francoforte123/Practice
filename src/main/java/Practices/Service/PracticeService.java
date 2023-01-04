@@ -21,8 +21,8 @@ public class PracticeService {
 
 
     public ResponseEntity createThePractice(Practice practice) throws AlreadyRegisteredException {
-        Optional<Practice> optionalPractice= practiceRepository.findById(practice.getId());
-        if (optionalPractice.isPresent()) throw new AlreadyRegisteredException("the practice " + practice.getNumberPractice() + " already registered");
+        Optional<Practice> optionalPractice= practiceRepository.getWithCode(practice.getNumberPractice());
+        if (optionalPractice.isPresent()) throw new AlreadyRegisteredException("the number of practice: " + practice.getNumberPractice() + ", already registered");
         practiceRepository.save(practice);
         return ResponseEntity.ok(practice);
     }
@@ -35,19 +35,19 @@ public class PracticeService {
 
     public Practice getSinglePractice(long id) throws NotFoundException {
         Optional<Practice> getPractice= practiceRepository.findById(id);
-        if (getPractice.isEmpty()) throw new NotFoundException("the practice " + id + " not found");
+        if (getPractice.isEmpty()) throw new NotFoundException("the practice with id: " + id + ", not found");
         return ResponseEntity.ok(getPractice).getBody().get();
     }
 
     public Practice getPracticeWithCode(String code) throws NotFoundException {
         Optional<Practice> getPractice= practiceRepository.getWithCode(code);
-        if (getPractice.isEmpty()) throw new NotFoundException("the practice " + code + " not found");
+        if (getPractice.isEmpty()) throw new NotFoundException("the number of practice with code: " + code + ", not found");
         return ResponseEntity.ok(getPractice).getBody().get();
     }
 
     public void deletePractice(long id) throws NotFoundException, GenericException {
         Optional<Practice> deletePractice= practiceRepository.findById(id);
-        if (!deletePractice.isPresent()) throw new NotFoundException("the practice " + id + " not found");
+        if (deletePractice.isEmpty()) throw new NotFoundException("the practice with id: " + id + ", not found");
         if (deletePractice.get().isDelete()==false){
             deletePractice.get().setDelete(true);
         }else {
