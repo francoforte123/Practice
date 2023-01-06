@@ -45,7 +45,7 @@ public class PracticeController {
     }
 
     @GetMapping("/practiceWithIdOfUser")
-    public List<Practice> acticeOfUser(@RequestParam String numberIdUser){
+    public List<Practice> ListOfpracticeOfUser(@RequestParam String numberIdUser){
         return practiceService.getPracticeOfUser(numberIdUser);
     }
 }
