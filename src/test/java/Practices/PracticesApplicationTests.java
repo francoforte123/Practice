@@ -3,7 +3,6 @@ package Practices;
 import Practices.Entitie.Practice;
 import Practices.Repository.PracticeRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +32,6 @@ class PracticesApplicationTests {
 
 		practiceRepository.save(practice);
 		Assertions.assertNotNull(practice);
-		System.out.println(practice);
 	}
 
 
@@ -51,12 +49,28 @@ class PracticesApplicationTests {
 
 		practiceRepository.save(practice);
 		Assertions.assertNotNull(practice);
-		System.out.println(practice);
 	}
 
 
 	@Test
-	public void getAllPractices(){		//togliere la configurazione del test nel file "yml" sia nell'anagrafica che nei prodotti
+	public void createThePractice3(){
+		Practice practice= new Practice();
+		practice.setNumberPractice("A002");
+		practice.setNumberIdUser("A00001");
+		practice.setDescription("this is the practice for purchase the house");
+		practice.setData(new Date(17/7/2020));
+		practice.setAmount(1000);
+		practice.setNameUser("Luca");
+		practice.setSurnameUser("Rossi");
+		practice.setDelete(false);
+
+		practiceRepository.save(practice);
+		Assertions.assertNotNull(practice);
+	}
+
+
+	@Test
+	public void getAllPractices(){
 		createThePractice1();
 		createThePractice2();
 
@@ -97,23 +111,20 @@ class PracticesApplicationTests {
 		long codeIdForDeleteTheUser= 2;
 
 		Optional<Practice> deleteThePractice= practiceRepository.findById(codeIdForDeleteTheUser);
-		System.out.println(deleteThePractice);
 		deleteThePractice.get().setDelete(true);
 		Assertions.assertEquals(practiceRepository.save(deleteThePractice.get()).isDelete(), true);
-		System.out.println(deleteThePractice);
 	}
 
 
 	@Test
-	@Disabled
-	public void getPracticeWithNumberIdUser(){
+	public void getPracticesWithNumberIdUser(){
 		createThePractice1();
 		createThePractice2();
+		createThePractice3();
 
 		String numberIdTheUser= "A00001";
 
-		List<Practice> getPractice= practiceRepository.findPracticeWithIdUser(numberIdTheUser);
-		Assertions.assertEquals(getPractice.get().getNumberIdUser(), numberIdTheUser);
-		System.out.println(getPractice);
+		Iterable<Practice> getPractice= practiceRepository.findPracticeWithIdUser(numberIdTheUser);
+		Assertions.assertEquals(getPractice.iterator().next().getNumberIdUser(), numberIdTheUser);
 	}
 }

@@ -57,7 +57,7 @@ public class PracticeService {
     }
 
     public List<Practice> getPracticeOfUser(String numberIdUser){
-        List<Practice> practiceOptional= practiceRepository.findPracticeWithIdUser(numberIdUser);
+        List<Practice> practiceOptional= (List<Practice>) practiceRepository.findPracticeWithIdUser(numberIdUser);
         if (practiceOptional.isEmpty()) HttpStatus.valueOf(200);
         return ResponseEntity.ok(practiceOptional).getBody();
     }
